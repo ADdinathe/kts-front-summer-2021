@@ -1,0 +1,217 @@
+* {
+    --main-bg-color: #FFF;
+    --main-icon-color: #FF5555;
+    --hint-color: #7E7E7E;
+    --border-color: #D9D9D9;
+    --hint-color: #7E7E7E;
+    --link-hover-color: #208FBF;
+    --default-color: #000;
+
+  }
+
+.main-block{
+    display: grid;
+    margin: 20px ;
+}
+.search-bar{
+    margin-bottom: 20px;
+}
+
+.search-bar__input{
+    padding: 0px;
+    margin: 0px 0px 0px 0px;
+    height: 50px;
+    width: 295px;
+    left: 0;
+    top: 0;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+    border-radius: 6px;
+    background: var(--main-bg-color);
+    padding-left: 12px;
+    font-family: Roboto, serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    display: inline-block;
+    align-items: center;
+    outline: none;
+}
+.search-bar__input:focus{
+
+border: 1px solid var(--main-icon-color);
+    color: var(--default-color);
+} 
+.search-bar__input:disabled{
+
+background: var(--border-color);
+
+}
+
+.search-bar__button{
+    margin: 20px 0px 0px 335px;
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    height: 50px;
+    width: 50px;
+    display: inline-block;
+    
+    /* accent */
+    
+    background: var(--main-icon-color);
+    border-radius: 6px;
+    border: none;
+
+}
+.search-bar__button:hover{
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+}
+.search-bar__button:disabled{
+        background: var(--border-color);
+}
+.search-bar__button img{
+    height: 17.5px;
+    width: 17.5px ;
+}
+
+
+.git-repo-tile{
+    margin: 8px 0px;
+    display: flex;
+    
+    width: 357px;
+    height: 104px;
+
+
+/* background */
+
+background: var(--main-bg-color);
+/* colorBorder */
+
+border: 1px solid var(--border-color);
+box-sizing: border-box;
+border-radius: 6px;
+}
+.git-repo-tile:hover{
+    /* shadow */
+
+box-shadow: 0px 2px 6px rgba(182, 182, 182, 0.25);
+border-radius: 6px;
+}
+.git-repo-tile__avatar{
+
+
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+font-style: normal;
+font-weight: bold;
+font-size: 40px;
+line-height: 75px;
+
+text-align: center;
+color: var(--main-bg-color);
+
+/* background */
+
+   
+    width: 80px;
+    height: 80px;
+    margin: 12px;
+    
+    /* accent */
+    
+    background: var(--main-icon-color);
+    border-radius: 50%;
+}
+
+.git-repo-tile-content__rep-name{
+margin: 23px 0px 4px 12px;
+height: 19px;
+left: 104px;
+display: block;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 19px;
+/* identical to box height */
+
+
+/* colorDefault */
+
+color: var(--default-color);
+}
+.git-repo-tile-content__org-name{
+margin: 0px 0px 4px 12px;
+height: 16px;
+display: block;
+
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 16px;
+
+/* colorHint */
+
+color: var(--hint-color);
+}
+
+.git-repo-tile-content__org-name:hover{
+    /* linkHover */
+
+color: var(--link-hover-color);
+}
+
+
+.git-repo-tile-content__star-number{ 
+
+display: inline-block;
+width: 24px;
+height: 16px;
+
+
+/* hint */
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 16px;
+
+/* colorHint */
+
+color: var(--hint-color);
+}
+
+.git-repo-tile-content__star-img {
+    margin-left: 10px;
+    vertical-align: -1px;
+    height: 12.392683029174805px;
+    width: 12.96426773071289px;
+} 
+
+
+.git-repo-tile-content__updated{
+
+height: 16px;
+left: 166px;
+display: inline-block;
+
+/* hint */
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 16px;
+
+/* colorHint */
+
+color: var(--hint-color);
+}
