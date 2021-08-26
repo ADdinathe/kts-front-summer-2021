@@ -1,7 +1,7 @@
 // Перечисление методов HTTP-запроса
-enum HTTPMethod {
-    GET,
-    POST
+export enum HTTPMethod {
+    GET = 'get',
+    POST = 'post'
 }
 
 // Параметры запроса
@@ -19,7 +19,7 @@ export type RequestParams<ReqT> = {
 }
 
 // Перечисление статусов ответа
-enum StatusHTTP {
+export enum StatusHTTP {
     OK = 200,
     NO_CONTENT = 204,
     BAD_REQUEST = 400,
@@ -38,6 +38,11 @@ export type ApiResponse<SuccessT, ErrorT> =
     | {
     success: false;
     data: ErrorT;
+    status: StatusHTTP;
+}
+    | {
+    success: false;
+    data: null;
     status: StatusHTTP;
 };
 

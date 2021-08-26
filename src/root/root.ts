@@ -1,11 +1,14 @@
 import GitHubStore from "../store/GitHubStore/GitHubStore";
+import {RepoItem} from "../store/GitHubStore/types";
+import {ApiResponse} from "../shared/store/ApiStore/types";
 
-export default class Main {
-    private GitHubStore: GitHubStore = new GitHubStore();
+const gitHubStore = new GitHubStore();
 
-    Main () {
-        this.GitHubStore.getSomeData({company_name: 'adobe'}).then((result) => {
-            console.log(result.data);
-        })
-    }
-}
+const EXAMPLE_ORGANIZATION = 'ktsstudio';
+
+gitHubStore.GetOrganizationReposListParams(
+    {
+        organizationName: EXAMPLE_ORGANIZATION
+    }).then((result: ApiResponse<RepoItem[], any>) => {
+        console.log(result);
+})

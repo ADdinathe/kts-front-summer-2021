@@ -1,4 +1,5 @@
-import {ApiResponse, IApiStore, RequestParams} from "./types";
+import qs from 'qs';
+import {ApiResponse, HTTPMethod, IApiStore, RequestParams, StatusHTTP} from "./types";
 
 export default class ApiStore implements IApiStore {
     readonly baseUrl : string;
@@ -7,30 +8,50 @@ export default class ApiStore implements IApiStore {
         this.baseUrl = url;
     }
 
-    async request<SuccessT, ErrorT = any, ReqT = {}>(params: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
-        const qs = require('qs');
-        let response : any;
-        if (params.method === 0) {
-            response = await fetch(this.baseUrl + params.endpoint + qs.stringify(params.data, {addQueryPrefix: true}));
-        } else {
-            response = await fetch(params.endpoint, {
-                method: 'POST',
-                headers: params.headers,
-                body: JSON.stringify(params.data)
-            });
+    private getRequestData<ReqT>(params: RequestParams<ReqT>): [string, RequestInit] {
+        let endpoint = `${this.baseUrl}${params.endpoint}`;
+
+        const req:RequestInit = {
+            method: params.method,
+            headers: {...params.headers}
+        };
+
+        if (params.method === HTTPMethod.GET) {
+            endpoint = `${endpoint}?${qs.stringify(params.data)}`;
         }
-        const data = await response.json()
-        if (response.ok) {
-            return {
-                success: true,
-                data: data as SuccessT,
-                status: response.status
+
+        if (params.method === HTTPMethod.POST) {
+            req.body = JSON.stringify(params.data);
+            req.headers = {
+                ...req.headers,
+                ['Content-Type']: 'application/json;charset=UTF-8'
+            };
             }
-        } else {
+
+        return [endpoint, req];
+        }
+
+    async request<SuccessT, ErrorT = any, ReqT = {}>(params: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>> {
+        try {
+            const response = await fetch(...this.getRequestData(params));
+
+            if (response.ok){
+                return {
+                    success: true,
+                    data: await response.json(),
+                    status: response.status
+                }
+            }
             return {
                 success: false,
-                data: data as ErrorT,
+                data: await response.json(),
                 status: response.status
+            }
+        } catch (e){
+            return {
+                success: false,
+                data: e,
+                status: StatusHTTP.BAD_GATEWAY
             }
         }
     }
