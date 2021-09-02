@@ -1,0 +1,27 @@
+.search-bar__button {
+
+    margin-left: 12px;
+    height: 50px;
+    width: 50px;
+    display: inline-block;
+    flex-shrink: 0;
+    color: var(--main-bg-color);
+    background: var(--main-icon-color);
+    border-radius: var(--corner-border-radius);
+    border: none;
+
+}
+
+.search-bar__button:hover {
+
+    transition: 0.8s;
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);
+
+}
+
+.search-bar__button:disabled {
+
+    background: var(--border-color);
+
+}
+

@@ -24,6 +24,7 @@ export default class ApiStore implements IApiStore {
             req.body = JSON.stringify(params.data);
             req.headers = {
                 ...req.headers,
+                // eslint-disable-next-line
                 ['Content-Type']: 'application/json;charset=UTF-8'
             };
             }
@@ -50,7 +51,7 @@ export default class ApiStore implements IApiStore {
         } catch (e){
             return {
                 success: false,
-                data: e,
+                data: null,
                 status: StatusHTTP.BAD_GATEWAY
             }
         }
