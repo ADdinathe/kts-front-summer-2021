@@ -5,8 +5,9 @@ import SearchIcon from "@components/SeacrhIcon";
 import RepoTile from "@components/RepoTile";
 import React, {useState} from "react";
 import GitHubStore from "../../../../../store/GitHubStore";
-import {BranchesItem, RepoItem} from "../../../../../store/GitHubStore/types";
+import {RepoItem} from "../../../../../store/GitHubStore/types";
 import RepoBranchesDrawer from "@components/RepoBranchesDrawer";
+import set = Reflect.set;
 
 
 const RepoSearchPage = () => {
@@ -15,7 +16,7 @@ const RepoSearchPage = () => {
     const [visible, setVisible] = useState(false);
     const [data, setData] = useState([] as RepoItem[])
     const [load, setLoad] = useState(false);
-    const [repo, setRepo] = useState<BranchesItem [] | null>(null);
+    const [repo, setRepo] = useState<RepoItem | null>(null);
 
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,15 +46,8 @@ const RepoSearchPage = () => {
 
     const handleRepoClicked = (it: RepoItem) => {
         //console.log(it.name, it.owner);
-        gitHubStore.GetOrganizationBranchesListParams({owner: it.owner, repo: it.name}).then((result) => {
-            if (result.success) {
-                setRepo(result.data);
-            } else {
-                alert("nothing");
-            }
-        })
         showDrawer();
-
+        setRepo(it);
     }
 
     return (

@@ -1,22 +1,35 @@
 import "./RepoBranchesDrawer.css"
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Drawer} from 'antd';
 import 'antd/dist/antd.css'
-import {BranchesItem} from "../../store/GitHubStore/types";
+import {BranchesItem, RepoItem} from "../../store/GitHubStore/types";
+import GitHubStore from "../../store/GitHubStore";
 
+const gitHubStore = new GitHubStore();
 
 type RepoSearchPageProps = {
-    selectedRepo: BranchesItem [] | null,
+    selectedRepo: RepoItem | null,
     onClose: () => void,
     visible: boolean
 }
 
 const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({selectedRepo, onClose, visible}) => {
-    if (selectedRepo !== null) {
+    const [repoList, setRepoList] = React.useState([] as BranchesItem[])
+        React.useEffect(() => {
+        if (selectedRepo != null){
+            gitHubStore.GetOrganizationBranchesListParams({owner: selectedRepo.owner, repo: selectedRepo.name}).then((result) => {
+                if (result.success) {
+                    setRepoList(result.data);
+                } else {
+                    alert("nothing");
+                }
+            });
+    }})
+
         return (
             <>
                 <Drawer title="Basic Drawer" placement="right" onClose={onClose} visible={visible}>
-                    {selectedRepo.map((it) => (
+                    {repoList.map((it) => (
                         <div key={it.sha}>
                             <p>{it.name}</p>
                             <p>{it.url}</p>
@@ -28,8 +41,7 @@ const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({selectedRepo, onClos
                 </Drawer>
             </>
         );
-    }
-    return null;
+
 };
 
 export default RepoBranchesDrawer;
