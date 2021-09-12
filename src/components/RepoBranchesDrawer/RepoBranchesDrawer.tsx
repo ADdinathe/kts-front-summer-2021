@@ -1,9 +1,12 @@
-import "./RepoBranchesDrawer.css"
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Drawer} from 'antd';
 import 'antd/dist/antd.css'
 import {BranchesItem, RepoItem} from "../../store/GitHubStore/types";
 import GitHubStore from "../../store/GitHubStore";
+import {useParams} from "react-router-dom";
+
+import drawerStyles from "./RepoBranchesDrawer.module.scss";
+
 
 const gitHubStore = new GitHubStore();
 
@@ -14,25 +17,30 @@ type RepoSearchPageProps = {
 }
 
 const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({selectedRepo, onClose, visible}) => {
-    const [repoList, setRepoList] = React.useState([] as BranchesItem[])
+
+    const [repoList, setRepoList] = React.useState<BranchesItem[]>([]);
+    const { id } = useParams<{ id: string }>();
+
+
         React.useEffect(() => {
-        if (selectedRepo != null){
-            gitHubStore.GetOrganizationBranchesListParams({owner: selectedRepo.owner, repo: selectedRepo.name}).then((result) => {
+
+        if (id !== undefined){
+            gitHubStore.GetOrganizationBranchesListParams({id: id}).then((result) => {
                 if (result.success) {
                     setRepoList(result.data);
                 } else {
-                    alert("nothing");
+                   // alert("nothing");
                 }
             });
-    }})
+    }}, [id]);
 
         return (
             <>
                 <Drawer title="Basic Drawer" placement="right" onClose={onClose} visible={visible}>
                     {repoList.map((it) => (
-                        <div key={it.sha}>
-                            <p>{it.name}</p>
-                            <p>{it.url}</p>
+                        <div key={it.name}>
+                            <p className={drawerStyles.item__name}>{it.name}</p>
+                            <p className={drawerStyles.item__url}>{it.url}</p>
                             <p>{it.protected}</p>
                         </div>
                     ))

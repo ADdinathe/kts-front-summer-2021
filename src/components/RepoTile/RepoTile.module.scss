@@ -1,4 +1,6 @@
-.git-repo-tile {
+@import "src/styles/App.scss";
+
+.gitRepoTile {
 
     display: flex;
     align-items: center;
@@ -9,28 +11,28 @@
     white-space: nowrap;
     flex-grow: 0;
 
-    background: var(--main-bg-color);
-    border: 1px solid var(--border-color);
+    background: $main-bg-color ;
+    border: 1px solid $border-color ;
     box-sizing: border-box;
-    border-radius: var(--corner-border-radius);
+    border-radius: $corner-border-radius ;
 
 }
 
-.git-repo-tile:hover {
+.gitRepoTile:hover {
 
     transition: 0.8s;
-    box-shadow: 0px 2px 6px rgba(182, 182, 182, 0.25);
-    border-radius: var(--corner-border-radius);
+    box-shadow: 0px 2px 6px rgba(182, 182, 182, 0.25 );
+    border-radius: $corner-border-radius ;
 
 }
 
-.git-repo-tile-content {
+.gitRepoTileContent {
 
     padding-left: 12px;
 
 }
 
-.git-repo-tile-content__rep-name {
+.gitRepoTileContent__repName {
 
 
     font-weight: 600;
@@ -42,43 +44,43 @@
     text-overflow: ellipsis;
     overflow: hidden;
 
-    color: var(--default-color);
+    color: $default-color ;
 
 }
 
-.git-repo-tile-content__org-name {
+.gitRepoTileContent__orgName {
 
     margin: 4px 0px;
     height: 16px;
     display: block;
     line-height: 14px;
 
-    color: var(--hint-color);
+    color: $hint-color ;
 
 }
 
-.git-repo-tile-content__org-name:hover {
+.gitRepoTileContent__orgName:hover {
 
-    color: var(--link-hover-color);
+    color: $link-hover-color ;
     transition: 0.8s;
 
 }
 
 
-.git-repo-tile-content__star-number {
+.gitRepoTileContent__starNumber {
 
     display: inline-block;
     width: 24px;
     height: 16px;
     line-height: 16px;
-    color: var(--hint-color);
+    color: $hint-color ;
 
 }
 
-.git-repo-tile-content__updated {
+.gitRepoTileContent__updated {
 
     display: inline-block;
     line-height: 16px;
-    color: var(--hint-color);
+    color: $hint-color ;
 
 }

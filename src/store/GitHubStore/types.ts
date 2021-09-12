@@ -5,8 +5,10 @@ export type GetOrganizationReposListParams = {
 }
 
 export type GetOrganizationBranchesListParams = {
-    owner: string;
-    repo: string
+
+    id: string;
+    // owner: string;
+    // repo: string
 }
 
 export type BranchesItem = {

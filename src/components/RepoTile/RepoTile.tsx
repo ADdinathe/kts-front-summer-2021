@@ -1,7 +1,8 @@
-import "./RepoTile.css"
+import tileStyle from "./RepoTile.module.scss";
 import Avatar from "@components/Avatar";
 import StarIcon from "@components/StarIcon";
 import {RepoItem} from "../../store/GitHubStore/types";
+import React from "react";
 
 
 type RepoTileProps = {
@@ -16,18 +17,18 @@ const RepoTile: React.FC<RepoTileProps> = ({item, _onClick}) => {
         _onClick(item);
 
     }
-    return (<div className="git-repo-tile" onClick={onClick}>
+    return (<div className={tileStyle.gitRepoTile} onClick={onClick}>
             <Avatar src={item.avatar_url} letter={item.name.charAt(0).toUpperCase()}/>
-            <div className="git-repo-tile-content">
-                <span className="git-repo-tile-content__rep-name">{item.name}</span>
-                <span className="git-repo-tile-content__org-name">{item.owner}</span>
+            <div className={tileStyle.gitRepoTileContent}>
+                <span className={tileStyle.gitRepoTileContent__repName}>{item.name}</span>
+                <span className={tileStyle.gitRepoTileContent__orgName}>{item.owner}</span>
                 <StarIcon/>
-                <span className="git-repo-tile-content__star-number">{item.stargazers_count}</span>
-                <span className="git-repo-tile-content__updated">{item.updated}</span>
+                <span className={tileStyle.gitRepoTileContent__starNumber}>{item.stargazers_count}</span>
+                <span className={tileStyle.gitRepoTileContent__updated}>{item.updated}</span>
 
             </div>
         </div>
     )
 };
 
-export default RepoTile;
+export default React.memo(RepoTile);

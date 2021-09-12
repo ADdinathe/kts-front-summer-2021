@@ -1,4 +1,6 @@
-.main-block {
+@import "src/styles/App.scss";
+
+.mainBlock {
 
     display: grid;
     margin: 20px;
@@ -7,7 +9,7 @@
 
 }
 
-.search-bar {
+.searchBar {
 
     margin-bottom: 4px;
     display: flex;

@@ -1,4 +1,4 @@
-import "./Avatar.css"
+import avatarStyle from "./Avatar.module.scss"
 import React from "react";
 
 
@@ -11,9 +11,9 @@ type AvatarProps = {
 
 const Avatar: React.FC<AvatarProps> = ({src, letter, alt}) => {
     if (src == null) {
-        return <div className="git-repo-tile__avatar"> {letter}</div>;
+        return <div className={avatarStyle.gitRepoTile__avatar}> {letter}</div>;
     }
-    return <img className="git-repo-tile__avatar" src={src} alt={alt}/>;
+    return <img className={avatarStyle.gitRepoTile__avatarImg} src={src} alt={alt}/>;
 };
 
 export default React.memo(Avatar);

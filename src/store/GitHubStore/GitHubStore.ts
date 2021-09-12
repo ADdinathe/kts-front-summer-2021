@@ -51,7 +51,7 @@ export default class GitHubStore implements IGitHubStore {
             method: HTTPMethod.GET,
             data: {},
             headers: {},
-            endpoint: `repos/${params.owner}/${params.repo}/branches`
+            endpoint: `repositories/${params.id}/branches`
         });
         const date = result.data;
         const array = [];

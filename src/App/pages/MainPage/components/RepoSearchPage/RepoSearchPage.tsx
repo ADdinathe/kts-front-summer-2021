@@ -1,22 +1,38 @@
-import "./RepoSearchPage.css"
 import Input from "@components/Input";
 import Button from "@components/Button";
 import SearchIcon from "@components/SeacrhIcon";
 import RepoTile from "@components/RepoTile";
-import React, {useState} from "react";
+import React, { useState, createContext, useContext } from "react";
 import GitHubStore from "../../../../../store/GitHubStore";
 import {RepoItem} from "../../../../../store/GitHubStore/types";
 import RepoBranchesDrawer from "@components/RepoBranchesDrawer";
-import set = Reflect.set;
+import {Link , Route} from 'react-router-dom';
 
+import searchPageStyles from "./RepoSearchPage.module.scss";
+
+const RepoContext = createContext< {
+    repoList: RepoItem[],
+    isLoading: boolean,
+    setisLoading: (load: boolean) => void
+}>(
+  {
+    repoList: [],
+    isLoading: false,
+    setisLoading: () => {}
+}
+);
+
+const Provider = RepoContext.Provider;
 
 const RepoSearchPage = () => {
-    const [value, setValue] = useState("")
+    const [value, setValue] = useState<string>("")
     const gitHubStore = new GitHubStore();
-    const [visible, setVisible] = useState(false);
-    const [data, setData] = useState([] as RepoItem[])
-    const [load, setLoad] = useState(false);
+    const [visible, setVisible] = useState<boolean>(false);
+    const [repoList, setrepoList] = useState<RepoItem[]>([])
+    const [isLoading, setisLoading] = useState<boolean>(false);
     const [repo, setRepo] = useState<RepoItem | null>(null);
+
+
 
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,43 +47,61 @@ const RepoSearchPage = () => {
     };
 
     const handleClick = () => {
-        setLoad(true);
+        setisLoading(true);
         gitHubStore.GetOrganizationReposListParams({organizationName: value}).then((result) => {
 
             if (result.success) {
-                setData(result.data);
+                setrepoList(result.data);
             } else {
                 //alert("nothing");
             }
-            setLoad(false);
+            setisLoading(false);
         })
 
     }
 
     const handleRepoClicked = (it: RepoItem) => {
-        //console.log(it.name, it.owner);
+
         showDrawer();
         setRepo(it);
     }
 
+    const RepoBranchesDrawerShower = () =>{
+        return(
+          <RepoBranchesDrawer selectedRepo={repo} onClose={onClose} visible={visible}/>
+        )
+    }
+
     return (
 
-        <div className="main-block">
-            <div className="search-bar">
-                <Input value={value} onChange={handleChange} disabled={load}
-                       placeholder={"Введите название организации"}/>
-                <Button onClick={handleClick} disabled={load}><SearchIcon/></Button>
-            </div>
+      <Provider value={{
+          repoList, isLoading , setisLoading
+      }
+      }>
+          <div className={searchPageStyles.mainBlock}>
+              <div className={searchPageStyles.searchBar}>
+                  <Input value={value} onChange={handleChange} disabled={isLoading}
+                         placeholder={"Введите название организации"}/>
+                  <Button onClick={handleClick} disabled={isLoading}><SearchIcon/></Button>
+              </div>
 
-            {data.map((it) => (
+              {repoList.map((it) => (
+                <Link to={`/repos/${it.id}`} key={it.id}>
+                    {<RepoTile  item={it} _onClick={handleRepoClicked}/>}</Link>
 
-                <RepoTile key={it.id} item={it} _onClick={handleRepoClicked}/>
-            ))
 
-            }
-            <RepoBranchesDrawer selectedRepo={repo} onClose={onClose} visible={visible}/>
+              ))
 
-        </div>
+              }
+              <Route path="/repos/:id" component={RepoBranchesDrawerShower} />
+
+
+          </div>
+      </Provider>
+
+
+
+
     );
 
 };

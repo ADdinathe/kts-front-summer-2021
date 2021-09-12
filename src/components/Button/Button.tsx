@@ -1,5 +1,7 @@
-import "./Button.css"
+import buttonStyle from "./Button.module.scss";
 import React from "react";
+
+
 
 
 type ButtonProps = {
@@ -10,11 +12,12 @@ type ButtonProps = {
 
 
 const Button: React.FC<ButtonProps> = ({children, onClick, disabled}) => {
+
     if (disabled) {
-        return <button className="search-bar__button" onClick={onClick} type="submit"
+        return <button className={buttonStyle.searchBar__button} onClick={onClick} type="submit"
                        disabled={true}>{children}</button>;
     }
-    return <button className="search-bar__button" onClick={onClick} type="submit">{children}</button>;
+    return <button className={buttonStyle.searchBar__button} onClick={onClick} type="submit">{children}</button>;
 
 };
 
