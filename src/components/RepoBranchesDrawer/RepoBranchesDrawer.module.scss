@@ -1,11 +1,11 @@
 @import "src/styles/App.scss";
 
 
-.item__name{
+.ItemName{
   background-color: $main-icon-color;
   border-radius: 20%;
 }
-.item__url{
+.ItemUrl{
   background-color: $link-hover-color;
 }
 .item__protected{
