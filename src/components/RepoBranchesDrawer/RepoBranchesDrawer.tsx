@@ -35,8 +35,8 @@ const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({ selectedRepo, onClo
         {gitHubStore.branch.map((it) => (
           <div key={it.name}>
             <p className={drawerStyles.ItemName}>{it.name}</p>
-            <p className={drawerStyles.ItemUrl}>{it.url}</p>
-            <p>{it.protected}</p>
+            <p className={drawerStyles.ItemUrl}>{it.commit.url}</p>
+            <p>{it.commit.sha}</p>
           </div>
         ))
         }

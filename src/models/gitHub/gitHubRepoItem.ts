@@ -1,33 +1,24 @@
+import { normalizeRepoOwner, RepoOwnerApi, RepoOwnerModel } from "./gitHubRepoOwner";
+import dayjs from "dayjs";
+
 export type RepoItemApi = {
   id: number;
   name: string;
   stargazers_count: number;
-  owner_id: number;
-  url: string;
-  avatar_url: string;
-  owner: string;
-  updated: string;
+  updated_at: string;
+  owner: RepoOwnerApi,
 };
-
-
 export type RepoItemModel = {
   id: number;
   name: string;
   stargazersCount: number;
-  ownerId: number;
-  url: string;
-  avatarUrl: string;
-  owner: string;
   updated: string;
+  owner: RepoOwnerModel,
 };
-
-export const normalizeRepoItem = (from: RepoItemApi): RepoItemModel =>({
+export const normalizeRepoItem = (from: RepoItemApi): RepoItemModel => ({
   id: from.id,
   name: from.name,
   stargazersCount: from.stargazers_count,
-  ownerId: from.owner_id,
-  url: from.url,
-  avatarUrl: from.avatar_url,
-  owner: from.owner,
-  updated: from.updated,
-})
+  updated: `Updated ${dayjs(from.updated_at).format("DD MMM")}`,
+  owner: normalizeRepoOwner(from.owner)
+});

@@ -20,10 +20,10 @@ const RepoTile: React.FC<RepoTileProps> = ({item, _onClick}) => {
 
     }
     return (<Link to={`/repos/${item.id}`} >{<div className={tileStyle.gitRepoTile} onClick={onClick}>
-        <Avatar src={item.avatarUrl} letter={item.name.charAt(0).toUpperCase()}/>
+        <Avatar src={item.owner.avatarUrl} letter={item.name.charAt(0).toUpperCase()}/>
         <div className={tileStyle.gitRepoTileContent}>
             <span className={tileStyle.gitRepoTileContent__repName}>{item.name}</span>
-            <span className={tileStyle.gitRepoTileContent__orgName}>{item.owner}</span>
+            <span className={tileStyle.gitRepoTileContent__orgName}>{item.owner.login}</span>
             <StarIcon/>
             <span className={tileStyle.gitRepoTileContent__starNumber}>{item.stargazersCount}</span>
             <span className={tileStyle.gitRepoTileContent__updated}>{item.updated}</span>

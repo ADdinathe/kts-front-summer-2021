@@ -3,7 +3,6 @@ import { HTTPMethod } from "../../shared/store/ApiStore/types";
 import { GetOrganizationBranchesListParams, GetOrganizationReposListParams, IGitHubStore } from "./types";
 import { Meta } from "@utils/meta";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
-import dayjs from "dayjs";
 import {
   BranchesItemApi,
   BranchesItemModel,
@@ -12,6 +11,7 @@ import {
   RepoItemApi,
   RepoItemModel
 } from "../../models/gitHub";
+import * as constants from "constants";
 
 const BASE_URL = "https://api.github.com/";
 
@@ -28,7 +28,7 @@ export default class GitHubStore implements IGitHubStore {
   constructor() {
     makeObservable<GitHubStore, PrivateFields>(this, {
       _list: observable.ref,
-      _branch: observable.ref,
+      _branch: observable,
       _meta: observable,
       list: computed,
       meta: computed,
@@ -61,27 +61,15 @@ export default class GitHubStore implements IGitHubStore {
       headers: {},
       endpoint: `orgs/${params.organizationName}/repos`
     });
-    const date = result.data;
-    const array = [] as RepoItemApi[];
+
     runInAction(() => {
       if (result.success) {
         try {
           this._meta = Meta.success;
-          for (let repo_info of date) {
-            array.push({
-              id: repo_info.id,
-              name: repo_info.name,
-              stargazers_count: repo_info.stargazers_count,
-              owner_id: repo_info.owner.id,
-              url: repo_info.owner.url,
-              avatar_url: repo_info.owner.avatar_url,
-              owner: repo_info.owner.login,
-              updated: `Updated ${dayjs(repo_info.pushed_at).format("DD MMM")}`
-            });
-          }
-          for (let rero of array) {
-            this._list.push(normalizeRepoItem(rero));
-          }
+          this._list=result.data.map(normalizeRepoItem)
+          // result.data.forEach((element) => {
+          //   this._list.push(normalizeRepoItem(element));
+          // });
         } catch (e) {
           this._meta = Meta.error;
         }
@@ -89,8 +77,6 @@ export default class GitHubStore implements IGitHubStore {
         this._meta = Meta.error;
       }
     });
-
-
   }
 
 
@@ -98,30 +84,19 @@ export default class GitHubStore implements IGitHubStore {
     this._meta = Meta.loading;
     this._branch = [];
 
-    const result = await this.ApiStore.request<BranchesItemApi>({
+    const result = await this.ApiStore.request<BranchesItemApi[]>({
       method: HTTPMethod.GET,
       data: {},
       headers: {},
       endpoint: `repositories/${params.id}/branches`
     });
 
-    const date = result.data;
-    const array = [] as BranchesItemApi[];
-
     runInAction(() => {
       if (result.success) {
         try {
-          for (let branch_info of date) {
-            array.push({
-              name: branch_info.name,
-              sha: branch_info.commit.sha,
-              url: branch_info.commit.url,
-              protected: branch_info.protected
-            });
-          }
-          for (let rero of array) {
-            this._branch.push(normalizeBranchesItem(rero));
-          }
+          this._branch=result.data.map(normalizeBranchesItem);
+          console.log(this._branch);
+
         } catch (e) {
           this._meta = Meta.error;
         }

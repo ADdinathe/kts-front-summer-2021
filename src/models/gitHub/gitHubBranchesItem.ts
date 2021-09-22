@@ -1,29 +1,18 @@
 import { RepoItemApi, RepoItemModel } from "./gitHubRepoItem";
+import { BranchesCommitApi, BranchesCommitModel, normalizeBranchesCommit } from "./gitHubBranchesCommit";
+import { normalizeRepoOwner } from "./gitHubRepoOwner";
 
 export type BranchesItemApi = {
-
   name: string;
-  sha: string;
-  url: string;
-  protected: boolean;
-
-
+  commit:BranchesCommitApi,
 };
 
 export type BranchesItemModel = {
-
   name: string;
-  sha: string;
-  url: string;
-  protected: boolean;
-
-
+  commit:BranchesCommitModel,
 };
 
 export const normalizeBranchesItem = (from: BranchesItemApi): BranchesItemModel =>({
   name: from.name,
-  sha: from.sha,
-  url: from.url,
-  protected: from.protected,
-
+  commit: normalizeBranchesCommit(from.commit),
 })
