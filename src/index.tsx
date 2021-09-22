@@ -1,4 +1,5 @@
 import React from 'react';
+import './config/configureMobX'
 import ReactDOM from 'react-dom';
 import './index.scss';
 import App from "./App/App";

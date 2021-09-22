@@ -4,51 +4,44 @@ import SearchIcon from "@components/SeacrhIcon";
 import RepoTile from "@components/RepoTile";
 import React, { useState, createContext, useContext } from "react";
 import GitHubStore from "../../../../../store/GitHubStore";
-import { RepoItem } from "../../../../../store/GitHubStore/types";
+// import { RepoItem } from "../../../../../store/GitHubStore/types";
 import RepoBranchesDrawer from "@components/RepoBranchesDrawer";
 import { Link, Route } from "react-router-dom";
+import { observer, useLocalObservable } from "mobx-react";
 
 import searchPageStyles from "./RepoSearchPage.module.scss";
+import { RepoItemModel } from "../../../../../models/gitHub";
 
 
 const RepoSearchPage = () => {
   const [value, setValue] = useState<string>("");
-  const gitHubStore = new GitHubStore();
+  const gitHubStore = useLocalObservable(() => new GitHubStore());
   const [visible, setVisible] = useState<boolean>(false);
-  const [repoList, setrepoList] = useState<RepoItem[]>([]);
   const [isLoading, setisLoading] = useState<boolean>(false);
-  const [repo, setRepo] = useState<RepoItem | null>(null);
+  const [repo, setRepo] = useState<RepoItemModel | null>(null);
 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-
   };
+
   const showDrawer = () => {
     setVisible(true);
   };
+
   const onClose = () => {
     setVisible(false);
   };
 
   const handleClick = () => {
-    setisLoading(true);
+      setisLoading(true);
     gitHubStore.GetOrganizationReposListParams({ organizationName: value }).then((result) => {
-
-      if (result.success) {
-        setrepoList(result.data);
-      } else {
-        //alert("nothing");
-      }
       setisLoading(false);
     });
-
   };
 
-  const handleRepoClicked = (it: RepoItem) => {
-
+  const handleRepoClicked = (it: RepoItemModel) => {
     showDrawer();
-    // setRepo(it);
   };
 
   const RepoBranchesDrawerShower = () => {
@@ -67,7 +60,7 @@ const RepoSearchPage = () => {
         <Button onClick={handleClick} disabled={isLoading}><SearchIcon /></Button>
       </div>
 
-      {repoList.map((it) => (
+      {gitHubStore.list.map((it) => (
         <RepoTile item={it} key={it.id} _onClick={handleRepoClicked} />
       ))}
 
@@ -80,4 +73,4 @@ const RepoSearchPage = () => {
 
 };
 
-export default RepoSearchPage;
+export default observer(RepoSearchPage);
