@@ -1,0 +1,8 @@
+@import "src/styles/App.scss";
+
+.gitRepoTileContent__starImg {
+
+    vertical-align: -1px;
+    @include square(13px);
+
+}
