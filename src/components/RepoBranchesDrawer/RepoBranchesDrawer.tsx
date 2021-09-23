@@ -5,9 +5,9 @@ import "antd/dist/antd.css";
 import RepoBranchesStore from "../../store/RepoBranchesStore/RepoBranchesStore";
 import { useParams } from "react-router-dom";
 import drawerStyles from "./RepoBranchesDrawer.module.scss";
-import { BranchesItemModel, RepoItemModel } from "../../models/gitHub";
+import { RepoItemModel } from "../../models/gitHub";
 import { observer, useLocalObservable } from "mobx-react";
-import { useLocalStore } from "@utils/useLocalStore/useLocalStore";
+
 
 
 type RepoSearchPageProps = {
@@ -17,17 +17,17 @@ type RepoSearchPageProps = {
 }
 const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({ selectedRepo, onClose, visible }) => {
   // const RepoBranchesStore = useLocalObservable(() => new RepoBranchesStore());
-  const RepoBranches = useLocalStore(() => new RepoBranchesStore())
+  const RepoBranches = useLocalObservable(() => new RepoBranchesStore())
   // const [repoList, setRepoList] = React.useState<BranchesItemModel[]>([]);
   const { id } = useParams<{ id: string }>();
 
    React.useEffect(() => {
     if (id !== undefined) {
-       const result = RepoBranches.GetOrganizationBranchesListParams({ id });
-       console.log(0,RepoBranches.branch)
+      RepoBranches.GetOrganizationBranchesListParams({ id });
+
     }
   }, [id, RepoBranches]);
-   console.log(1,RepoBranches.branch);
+
   return (
     <>
       <Drawer title="Basic Drawer" placement="right" onClose={onClose} visible={visible}>

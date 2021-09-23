@@ -1,13 +1,12 @@
 import buttonStyle from "./Button.module.scss";
 import React from "react";
-
-
+import { Meta } from "@utils/meta";
 
 
 type ButtonProps = {
     children?: React.ReactNode;
     onClick: (e: React.MouseEvent) => void;
-    disabled: boolean;
+    disabled: Meta;
 }
 
 
@@ -15,7 +14,7 @@ const Button: React.FC<ButtonProps> = ({children, onClick, disabled}) => {
 
     if (disabled) {
         return <button className={buttonStyle.searchBar__button} onClick={onClick} type="submit"
-                       disabled={true}>{children}</button>;
+                       disabled={disabled === Meta.loading}>{children}</button>;
     }
     return <button className={buttonStyle.searchBar__button} onClick={onClick} type="submit">{children}</button>;
 

@@ -34,10 +34,8 @@ const RepoSearchPage = () => {
   };
 
   const handleClick = () => {
-      setisLoading(true);
-    gitHubStore.GetOrganizationReposListParams({ organizationName: value }).then((result) => {
-      setisLoading(false);
-    });
+
+    gitHubStore.GetOrganizationReposListParams({ organizationName: value })
   };
 
   const handleRepoClicked = (it: RepoItemModel) => {
@@ -55,9 +53,9 @@ const RepoSearchPage = () => {
 
     <div className={searchPageStyles.mainBlock}>
       <div className={searchPageStyles.searchBar}>
-        <Input value={value} onChange={handleChange} disabled={isLoading}
+        <Input value={value} onChange={handleChange} disabled={gitHubStore.meta}
                placeholder={"Введите название организации"} />
-        <Button onClick={handleClick} disabled={isLoading}><SearchIcon /></Button>
+        <Button onClick={handleClick} disabled={gitHubStore.meta}><SearchIcon /></Button>
       </div>
 
       {gitHubStore.list.map((it) => (

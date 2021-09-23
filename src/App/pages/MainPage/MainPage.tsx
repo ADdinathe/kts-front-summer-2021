@@ -1,5 +1,5 @@
 import "./MainPage.scss"
-import React, { createContext, useState } from "react";
+import React, { createContext } from "react";
 import RepoSearchPage from "./components/RepoSearchPage";
 import { BrowserRouter, Route, Redirect} from "react-router-dom";
 // import { RepoItem } from "../../../store/ReposListStore/types";
@@ -18,7 +18,7 @@ const RepoContext = createContext<{
     }
   }
 );
-const Provider = RepoContext.Provider;
+// const Provider = RepoContext.Provider;
 
 const MainPage = () => {
     return(

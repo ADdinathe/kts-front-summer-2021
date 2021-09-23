@@ -1,5 +1,4 @@
 import '@styles/App.scss';
-import "../root/root"
 import MainPage from "./pages/MainPage";
 
 
