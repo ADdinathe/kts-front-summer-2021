@@ -3,8 +3,8 @@ import Button from "@components/Button";
 import SearchIcon from "@components/SeacrhIcon";
 import RepoTile from "@components/RepoTile";
 import React, { useState, createContext, useContext } from "react";
-import GitHubStore from "../../../../../store/GitHubStore";
-// import { RepoItem } from "../../../../../store/GitHubStore/types";
+import ReposListStore from "../../../../../store/ReposListStore";
+// import { RepoItem } from "../../../../../store/ReposListStore/types";
 import RepoBranchesDrawer from "@components/RepoBranchesDrawer";
 import { Link, Route } from "react-router-dom";
 import { observer, useLocalObservable } from "mobx-react";
@@ -15,7 +15,7 @@ import { RepoItemModel } from "../../../../../models/gitHub";
 
 const RepoSearchPage = () => {
   const [value, setValue] = useState<string>("");
-  const gitHubStore = useLocalObservable(() => new GitHubStore());
+  const gitHubStore = useLocalObservable(() => new ReposListStore());
   const [visible, setVisible] = useState<boolean>(false);
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [repo, setRepo] = useState<RepoItemModel | null>(null);

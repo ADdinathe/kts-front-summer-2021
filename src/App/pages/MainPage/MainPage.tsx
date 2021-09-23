@@ -2,7 +2,7 @@ import "./MainPage.scss"
 import React, { createContext, useState } from "react";
 import RepoSearchPage from "./components/RepoSearchPage";
 import { BrowserRouter, Route, Redirect} from "react-router-dom";
-// import { RepoItem } from "../../../store/GitHubStore/types";
+// import { RepoItem } from "../../../store/ReposListStore/types";
 // import RepoBranchesDrawer from "@components/RepoBranchesDrawer";
 import { RepoItemModel } from "../../../models/gitHub";
 

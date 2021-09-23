@@ -1,6 +1,5 @@
-import { RepoItemApi, RepoItemModel } from "./gitHubRepoItem";
 import { BranchesCommitApi, BranchesCommitModel, normalizeBranchesCommit } from "./gitHubBranchesCommit";
-import { normalizeRepoOwner } from "./gitHubRepoOwner";
+
 
 export type BranchesItemApi = {
   name: string;

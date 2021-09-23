@@ -1,7 +1,7 @@
 import tileStyle from "./RepoTile.module.scss";
 import Avatar from "@components/Avatar";
 import StarIcon from "@components/StarIcon";
-// import {RepoItem} from "../../store/GitHubStore/types";
+// import {RepoItem} from "../../store/ReposListStore/types";
 import React from "react";
 import { Link } from "react-router-dom";
 import { RepoItemModel } from "../../models/gitHub";
