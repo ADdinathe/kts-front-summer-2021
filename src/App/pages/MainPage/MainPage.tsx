@@ -22,14 +22,10 @@ const RepoContext = createContext<{
 
 const MainPage = () => {
     return(
-
         <BrowserRouter>
         <Route path="/repos" component={RepoSearchPage}/>
         <Redirect to="/repos" />
       </BrowserRouter>
-
-
-
     )
 };
 

@@ -12,11 +12,9 @@ type ButtonProps = {
 
 const Button: React.FC<ButtonProps> = ({children, onClick, disabled}) => {
 
-    if (disabled) {
         return <button className={buttonStyle.searchBar__button} onClick={onClick} type="submit"
                        disabled={disabled === Meta.loading}>{children}</button>;
-    }
-    return <button className={buttonStyle.searchBar__button} onClick={onClick} type="submit">{children}</button>;
+
 
 };
 

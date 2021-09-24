@@ -7,7 +7,7 @@ import { action, computed, makeObservable, observable, runInAction } from "mobx"
 import {
   BranchesItemApi,
   BranchesItemModel,
-  normalizeBranchesItem,
+  normalizeBranchesItem
 } from "../../models/gitHub";
 import {
   CollectionModel,
@@ -25,7 +25,7 @@ type PrivateFields = "_meta" | "_branch";
 export default class RepoBranchesStore implements ILocalStore {
   private readonly ApiStore: ApiStore = new ApiStore(BASE_URL);
 
-  // private _branch: BranchesItemModel[] = [];
+
   private _branch: CollectionModel<string, BranchesItemModel> = getInitialCollectionModel();
 
   private _meta: Meta = Meta.initial;
@@ -33,15 +33,15 @@ export default class RepoBranchesStore implements ILocalStore {
 
   constructor() {
     makeObservable<RepoBranchesStore, PrivateFields>(this, {
-      _branch: observable,
+      _branch: observable.ref,
       _meta: observable,
       meta: computed,
+      branch: computed,
       GetOrganizationBranchesListParams: action
     });
   }
 
   get branch(): BranchesItemModel[] {
-    // return this._branch;
     return linearizeCollection(this._branch);
   }
 
@@ -52,7 +52,6 @@ export default class RepoBranchesStore implements ILocalStore {
 
   async GetOrganizationBranchesListParams(params: GetOrganizationBranchesListParams): Promise<void> {
     this._meta = Meta.loading;
-    // this._branch = [];
     this._branch = getInitialCollectionModel();
 
     const result = await this.ApiStore.request<BranchesItemApi[]>({
@@ -67,9 +66,6 @@ export default class RepoBranchesStore implements ILocalStore {
         try {
           // this._branch=result.data.map(normalizeBranchesItem);
           this._branch = normalizeCollection(result.data.map(normalizeBranchesItem), (listItem) => listItem.name);
-
-          console.log(this._branch);
-
         } catch (e) {
           this._meta = Meta.error;
         }
@@ -79,7 +75,7 @@ export default class RepoBranchesStore implements ILocalStore {
     });
   }
 
-  destroy() : void{
+  destroy(): void {
 
   }
 }

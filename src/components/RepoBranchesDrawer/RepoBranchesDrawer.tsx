@@ -1,24 +1,18 @@
 import React from "react";
 import { Drawer } from "antd";
 import "antd/dist/antd.css";
-// import { BranchesItem, RepoItem } from "../../store/RepoBranches/types";
 import RepoBranchesStore from "../../store/RepoBranchesStore/RepoBranchesStore";
 import { useParams } from "react-router-dom";
 import drawerStyles from "./RepoBranchesDrawer.module.scss";
-import { RepoItemModel } from "../../models/gitHub";
 import { observer, useLocalObservable } from "mobx-react";
 
 
-
 type RepoSearchPageProps = {
-  selectedRepo: RepoItemModel | null,
   onClose: () => void,
   visible: boolean
 }
-const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({ selectedRepo, onClose, visible }) => {
-  // const RepoBranchesStore = useLocalObservable(() => new RepoBranchesStore());
+const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({  onClose, visible }) => {
   const RepoBranches = useLocalObservable(() => new RepoBranchesStore())
-  // const [repoList, setRepoList] = React.useState<BranchesItemModel[]>([]);
   const { id } = useParams<{ id: string }>();
 
    React.useEffect(() => {
@@ -42,7 +36,6 @@ const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({ selectedRepo, onClo
       </Drawer>
     </>
   );
-
 };
 
 export default observer(RepoBranchesDrawer);

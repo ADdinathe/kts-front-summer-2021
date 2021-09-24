@@ -42,7 +42,6 @@ export default class ReposListStore implements ILocalStore {
   }
 
   get list(): RepoItemModel[] {
-    // return this._list;
     return linearizeCollection(this._list);
   }
   get meta(): Meta {
