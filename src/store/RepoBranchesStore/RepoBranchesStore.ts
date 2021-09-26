@@ -7,7 +7,7 @@ import { action, computed, makeObservable, observable, runInAction } from "mobx"
 import {
   BranchesItemApi,
   BranchesItemModel,
-  normalizeBranchesItem
+  normalizeBranchesItem, RepoItemApi
 } from "../../models/gitHub";
 import {
   CollectionModel,
@@ -23,7 +23,7 @@ const BASE_URL = "https://api.github.com/";
 type PrivateFields = "_meta" | "_branch";
 
 export default class RepoBranchesStore implements ILocalStore {
-  private readonly ApiStore: ApiStore = new ApiStore(BASE_URL);
+  private readonly ApiStore = new ApiStore<BranchesItemApi[]>(BASE_URL);
 
 
   private _branch: CollectionModel<string, BranchesItemModel> = getInitialCollectionModel();
@@ -54,7 +54,7 @@ export default class RepoBranchesStore implements ILocalStore {
     this._meta = Meta.loading;
     this._branch = getInitialCollectionModel();
 
-    const result = await this.ApiStore.request<BranchesItemApi[]>({
+    const result = await this.ApiStore.request({
       method: HTTPMethod.GET,
       data: {},
       headers: {},
@@ -62,10 +62,10 @@ export default class RepoBranchesStore implements ILocalStore {
     });
 
     runInAction(() => {
-      if (result.success) {
+      if (this.ApiStore.success) {
         try {
           // this._branch=result.data.map(normalizeBranchesItem);
-          this._branch = normalizeCollection(result.data.map(normalizeBranchesItem), (listItem) => listItem.name);
+          this._branch = normalizeCollection(this.ApiStore.data.map(normalizeBranchesItem), (listItem) => listItem.name);
         } catch (e) {
           this._meta = Meta.error;
         }
