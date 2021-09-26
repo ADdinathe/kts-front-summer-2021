@@ -1,10 +1,10 @@
 import '@styles/App.scss';
-import "../root/root"
 import MainPage from "./pages/MainPage";
+// import {useQueryParamsStoreInit} from "../store/hooks/useQueryParamsStoreInit";
 
 
 function App() {
-
+    // useQueryParamsStoreInit();
     return <MainPage/>
 }
 

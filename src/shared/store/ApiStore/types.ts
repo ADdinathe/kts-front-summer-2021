@@ -52,5 +52,5 @@ export interface IApiStore {
     readonly baseUrl: string;
 
     // Метод, с помощью которого делается запрос. TODO: реализовать в классе ApiStore
-    request<SuccessT, ErrorT = any, ReqT = {}>(params: RequestParams<ReqT>): Promise<ApiResponse<SuccessT, ErrorT>>
+    request<SuccessT, ErrorT = any, ReqT = {}>(params: RequestParams<ReqT>): Promise<void>
 }

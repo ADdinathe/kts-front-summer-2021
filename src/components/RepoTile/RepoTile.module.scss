@@ -68,7 +68,7 @@
 
 
 .gitRepoTileContent__starNumber {
-
+    margin-right: 5px;
     display: inline-block;
     width: 24px;
     height: 16px;
@@ -78,7 +78,7 @@
 }
 
 .gitRepoTileContent__updated {
-
+    margin-left: 20px;
     display: inline-block;
     line-height: 16px;
     color: $hint-color ;

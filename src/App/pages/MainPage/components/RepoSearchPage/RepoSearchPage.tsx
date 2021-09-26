@@ -3,76 +3,80 @@ import Button from "@components/Button";
 import SearchIcon from "@components/SeacrhIcon";
 import RepoTile from "@components/RepoTile";
 import React, { useState, createContext, useContext } from "react";
-import GitHubStore from "../../../../../store/GitHubStore";
-import { RepoItem } from "../../../../../store/GitHubStore/types";
+import ReposListStore from "../../../../../store/ReposListStore";
 import RepoBranchesDrawer from "@components/RepoBranchesDrawer";
 import { Link, Route } from "react-router-dom";
-
+import { observer, useLocalObservable } from "mobx-react";
 import searchPageStyles from "./RepoSearchPage.module.scss";
+import { RepoItemModel } from "@models/gitHub";
+import {Meta} from "@utils/meta";
+import ErrorImage from "@components/ErrorImage";
+import LoadingSpin from "@components/LoadingSpin";
 
 
 const RepoSearchPage = () => {
   const [value, setValue] = useState<string>("");
-  const gitHubStore = new GitHubStore();
+  const gitHubStore = useLocalObservable(() => new ReposListStore());
   const [visible, setVisible] = useState<boolean>(false);
-  const [repoList, setrepoList] = useState<RepoItem[]>([]);
-  const [isLoading, setisLoading] = useState<boolean>(false);
-  const [repo, setRepo] = useState<RepoItem | null>(null);
 
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+  }, []);
 
-  };
   const showDrawer = () => {
     setVisible(true);
   };
+
   const onClose = () => {
     setVisible(false);
   };
 
-  const handleClick = () => {
-    setisLoading(true);
-    gitHubStore.GetOrganizationReposListParams({ organizationName: value }).then((result) => {
 
-      if (result.success) {
-        setrepoList(result.data);
-      } else {
-        //alert("nothing");
+  const handleClick = React.useCallback(() => {
+    const getresult = async () => {
+      try {
+        await gitHubStore.GetOrganizationReposListParams({
+          organizationName: value
+        });
+      } catch (e) {
+        console.log(e);
       }
-      setisLoading(false);
-    });
+    };
+    getresult();
+  }, [value, gitHubStore]);
 
-  };
-
-  const handleRepoClicked = (it: RepoItem) => {
-
+  const handleRepoClicked = React.useCallback((it: RepoItemModel) => {
     showDrawer();
-    // setRepo(it);
-  };
+  }, [showDrawer]);
 
   const RepoBranchesDrawerShower = () => {
     return (
-      <RepoBranchesDrawer selectedRepo={repo} onClose={onClose} visible={visible} />
+      <RepoBranchesDrawer onClose={onClose} visible={visible} />
     );
   };
 
   return (
 
 
+
     <div className={searchPageStyles.mainBlock}>
       <div className={searchPageStyles.searchBar}>
-        <Input value={value} onChange={handleChange} disabled={isLoading}
+        <Input value={value} onChange={handleChange} disabled={gitHubStore.meta}
                placeholder={"Введите название организации"} />
-        <Button onClick={handleClick} disabled={isLoading}><SearchIcon /></Button>
+        <Button onClick={handleClick} disabled={gitHubStore.meta}><SearchIcon /></Button>
       </div>
 
-      {repoList.map((it) => (
-        <RepoTile item={it} key={it.id} _onClick={handleRepoClicked} />
-      ))}
+      {gitHubStore.meta === Meta.error && <ErrorImage />}
+      {gitHubStore.meta === Meta.loading && <LoadingSpin />}
+      {gitHubStore.meta !== (Meta.loading || Meta.error) &&
+          <>
+            {gitHubStore.list.map((it) => (
+              <RepoTile item={it} key={it.id} _onClick={handleRepoClicked} loading={gitHubStore.meta} />
+          ))}
+          </>
 
+      }
       <Route path="/repos/:id" component={RepoBranchesDrawerShower} />
-
     </div>
 
 
@@ -80,4 +84,5 @@ const RepoSearchPage = () => {
 
 };
 
-export default RepoSearchPage;
+
+export default observer(RepoSearchPage);
