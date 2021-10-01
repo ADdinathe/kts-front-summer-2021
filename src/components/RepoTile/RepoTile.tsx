@@ -12,14 +12,14 @@ import { Spin } from "antd";
 
 type RepoTileProps = {
     item: RepoItemModel;
-    _onClick: (it: RepoItemModel) => void;
+    _onClick: (it: number) => void;
     loading: Meta
 }
 
 
 const RepoTile: React.FC<RepoTileProps> = ({item, _onClick, loading}) => {
     const onClick = (e: React.MouseEvent) => {
-        _onClick(item);
+        _onClick(item.id);
 
     }
 

@@ -8,10 +8,9 @@ import {observer, useLocalObservable} from "mobx-react";
 
 //adifjvbhaiefhbva
 type RepoSearchPageProps = {
-    onClose: () => void,
-    visible: boolean
+    onClose: () => void
 }
-const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({onClose, visible}) => {
+const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({onClose}) => {
     const RepoBranches = useLocalObservable(() => new RepoBranchesStore())
     const {id} = useParams<{ id: string }>();
 
@@ -24,7 +23,7 @@ const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({onClose, visible}) =
 
     return (
         <>
-            <Drawer title="Basic Drawer" placement="right" onClose={onClose} visible={visible}>
+            <Drawer title="Basic Drawer" placement="right" onClose={onClose} visible={true}>
                 {RepoBranches.branch.map((it) => (
                     <div key={it.name}>
                         <p className={drawerStyles.ItemName}>{it.name}</p>
