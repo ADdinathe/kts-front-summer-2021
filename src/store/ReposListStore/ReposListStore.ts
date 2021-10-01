@@ -77,10 +77,10 @@ export default class ReposListStore implements ILocalStore {
     destroy(): void {
     }
 
-    private readonly _qpReaction: IReactionDisposer = reaction(
-        () => rootStore.query.getParam("search"),
-        (search) => {
-            console.log(search);
-        }
-    )
+    // private readonly _qpReaction: IReactionDisposer = reaction(
+    //     () => rootStore.query.getParam("search"),
+    //     (search) => {
+    //         console.log(search);
+    //     }
+    // )
 }

@@ -1,4 +1,4 @@
-import inputStyle from './input.module.scss';
+import inputStyle from "./input.module.scss";
 import React from "react";
 import { Meta } from "utils/meta";
 

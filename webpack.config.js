@@ -1,14 +1,15 @@
 const path = require('path');
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TsCheckerPlugin = require('fork-ts-checker-webpack-plugin');
 const {template} = require("@babel/core");
+
 const buildPath = path.resolve(__dirname, 'dist');
 const srcPath = path.resolve(__dirname, 'src');
-const TsCheckerPlugin = require('fork-ts-checker-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
+
 const getSettingsForStyles = (withModules = false) => {
     return [MiniCssExtractPlugin.loader,
         !withModules ? 'css-loader' : {
@@ -30,16 +31,16 @@ const getSettingsForStyles = (withModules = false) => {
 
 module.exports = {
     entry: path.resolve(__dirname, './src/index.tsx'),
-    target: process.env.NODE_ENV === 'development' ? 'web' : 'browserslist',
-    devtool: isProd? 'hidden-source-map' : 'eval-source-map',
+    target: !isProd ? 'web' : 'browserslist',
+    devtool: isProd ? 'hidden-source-map' : 'eval-source-map',
     output: {
         path: buildPath,
         filename: "bundle.js"
     },
     plugins: [
-        // new HtmlWebpackPlugin({
-        //     template: path.join(srcPath, 'index.html')
-        // }),
+        new HtmlWebpackPlugin({
+            template: path.join(srcPath, 'index.html')
+        }),
         !isProd && new ReactRefreshWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: '[name]-[hash].css'
@@ -80,12 +81,12 @@ module.exports = {
             styles: path.join(srcPath, 'styles'),
             utils: path.join(srcPath, 'utils'),
             models: path.join(srcPath, 'models'),
-            }
+        }
     },
     devServer: {
-        host: '127.0.0.1',
+        host: 'localhost',
         port: 3000,
         hot: true,
-        // inline: true
+        historyApiFallback: true
     }
 }

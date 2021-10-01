@@ -1,18 +1,19 @@
 import qs from 'qs';
 import {ApiResponse, HTTPMethod, IApiStore, RequestParams, StatusHTTP} from "./types";
 import {ILocalStore} from "utils/useLocalStore/useLocalStore";
-import { action, computed, makeObservable, observable, runInAction } from "mobx";
+import {action, computed, makeObservable, observable, runInAction} from "mobx";
 
 
 type PrivateFields = "_success" | "_data" | "_status";
 
-export default class ApiStore <SuccessT, ErrorT = any>implements ILocalStore {
+export default class ApiStore<SuccessT, ErrorT = any> implements ILocalStore {
 
-    readonly baseUrl : string;
+    readonly baseUrl: string;
     private _success: boolean = false;
     private _data: SuccessT = {} as SuccessT;
     private _status: StatusHTTP | number = StatusHTTP.BAD_GATEWAY;
-    constructor(url : string) {
+
+    constructor(url: string) {
         this.baseUrl = url;
         makeObservable<ApiStore<SuccessT, ErrorT>, PrivateFields>(this, {
             _success: observable.ref,
@@ -31,7 +32,7 @@ export default class ApiStore <SuccessT, ErrorT = any>implements ILocalStore {
 
     get data(): SuccessT {
 
-            return this._data;
+        return this._data;
 
     }
 
@@ -42,7 +43,7 @@ export default class ApiStore <SuccessT, ErrorT = any>implements ILocalStore {
     private getRequestData<ReqT>(params: RequestParams<ReqT>): [string, RequestInit] {
         let endpoint = `${this.baseUrl}${params.endpoint}`;
 
-        const req:RequestInit = {
+        const req: RequestInit = {
             method: params.method,
             headers: {...params.headers}
         };
@@ -58,33 +59,33 @@ export default class ApiStore <SuccessT, ErrorT = any>implements ILocalStore {
                 // eslint-disable-next-line
                 ['Content-Type']: 'application/json;charset=UTF-8'
             };
-            }
-
-        return [endpoint, req];
         }
 
-    async request< ReqT = {}>(params: RequestParams<ReqT>): Promise<void> {
+        return [endpoint, req];
+    }
+
+    async request<ReqT = {}>(params: RequestParams<ReqT>): Promise<void> {
         try {
             const response = await fetch(...this.getRequestData(params));
-             await runInAction(async () => {
-                 if (response.ok) {
+            await runInAction(async () => {
+                if (response.ok) {
 
-                     this._success = true;
-                     this._data = await response.json();
-                     this._status = response.status
+                    this._success = true;
+                    this._data = await response.json();
+                    this._status = response.status
 
-                 } else {
-                     this._success = false;
-                     this._data = await response.json();
-                     this._status = response.status
-                 }
-             })
+                } else {
+                    this._success = false;
+                    this._data = await response.json();
+                    this._status = response.status
+                }
+            })
 
-        } catch (event){
-             runInAction(() => {
-                this._success= false;
-                this._data= event as SuccessT;
-                this._status=StatusHTTP.BAD_GATEWAY
+        } catch (event) {
+            runInAction(() => {
+                this._success = false;
+                this._data = event as SuccessT;
+                this._status = StatusHTTP.BAD_GATEWAY
             })
 
         }

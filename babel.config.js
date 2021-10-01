@@ -6,15 +6,12 @@ module.exports = api => {
         "@babel/preset-react",
         "@babel/preset-typescript",
         "mobx",
-
-    ];
+    ]
 
     const plugins = [
         "@babel/plugin-proposal-optional-chaining",
         process.env.NODE_ENV === 'development' && 'react-refresh/babel'
     ].filter(Boolean);
-
-
 
     return {
         presets,
