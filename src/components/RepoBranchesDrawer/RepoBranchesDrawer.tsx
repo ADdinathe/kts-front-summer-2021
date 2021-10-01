@@ -1,56 +1,40 @@
 import React from "react";
-import { Drawer } from "antd";
+import {Drawer} from "antd";
 import "antd/dist/antd.css";
-import { BranchesItem, RepoItem } from "../../store/GitHubStore/types";
-import GitHubStore from "../../store/GitHubStore";
-import { useParams } from "react-router-dom";
-
+import RepoBranchesStore from "../../store/RepoBranchesStore/RepoBranchesStore";
+import {useParams} from "react-router-dom";
 import drawerStyles from "./RepoBranchesDrawer.module.scss";
+import {observer, useLocalObservable} from "mobx-react";
 
-
-const gitHubStore = new GitHubStore();
-
+//adifjvbhaiefhbva
 type RepoSearchPageProps = {
-  selectedRepo: RepoItem | null,
-  onClose: () => void,
-  visible: boolean
+    onClose: () => void
 }
+const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({onClose}) => {
+    const RepoBranches = useLocalObservable(() => new RepoBranchesStore())
+    const {id} = useParams<{ id: string }>();
 
-const RepoBranchesDrawer: React.FC<RepoSearchPageProps> = ({ selectedRepo, onClose, visible }) => {
-
-  const [repoList, setRepoList] = React.useState<BranchesItem[]>([]);
-  const { id } = useParams<{ id: string }>();
-
-
-   React.useEffect(() => {
-
-    if (id !== undefined) {
-        gitHubStore.GetOrganizationBranchesListParams({ id }).then((result) => {
-        if (result.success) {
-          setRepoList(result.data);
-        } else {
-          setRepoList(result.data);
-        }
-      });
-    }
-  }, [id]);
-
-  return (
-    <>
-      <Drawer title="Basic Drawer" placement="right" onClose={onClose} visible={visible}>
-        {repoList.map((it) => (
-          <div key={it.name}>
-            <p className={drawerStyles.ItemName}>{it.name}</p>
-            <p className={drawerStyles.ItemUrl}>{it.url}</p>
-            <p>{it.protected}</p>
-          </div>
-        ))
+    React.useEffect(() => {
+        if (id !== undefined) {
+            RepoBranches.GetOrganizationBranchesListParams({id});
 
         }
-      </Drawer>
-    </>
-  );
+    }, [id, RepoBranches]);
 
+    return (
+        <>
+            <Drawer title="Basic Drawer" placement="right" onClose={onClose} visible={true}>
+                {RepoBranches.branch.map((it) => (
+                    <div key={it.name}>
+                        <p className={drawerStyles.ItemName}>{it.name}</p>
+                        <p className={drawerStyles.ItemUrl}>{it.commit.url}</p>
+                        <p>{it.commit.sha}</p>
+                    </div>
+                ))
+                }
+            </Drawer>
+        </>
+    );
 };
 
-export default RepoBranchesDrawer;
+export default observer(RepoBranchesDrawer);
